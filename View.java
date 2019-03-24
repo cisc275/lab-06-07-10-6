@@ -14,18 +14,21 @@ import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.util.*;
 
 public class View extends JFrame {
 
 	final int frameCount = 10;
-    BufferedImage[] pics;
-    int xloc = 100;
+	HashMap<Direction, BufferedImage> imgs;    
+	int xloc = 100;
     int yloc = 100;
     final int xIncr = 1;
     final int yIncr = 1;
     final int picSize = 165;
     final int frameStartSize = 800;
     final int drawDelay = 30; //msec
+	int picNum = 0;
+	BufferedImage currImg;
     
     DrawPanel drawPanel = new DrawPanel();
     Action drawAction;
@@ -38,16 +41,33 @@ public class View extends JFrame {
     	};
     	
     	add(drawPanel);
-    	BufferedImage img = createImage();
-    	pics = new BufferedImage[frameCount];//get this dynamically
-    	for(int i = 0; i < frameCount; i++)
-    		pics[i] = img.getSubimage(picSize*i, 0, picSize, picSize);
-   
+		imgs = new HashMap<Direction, BufferedImage>();
+		imgs.put(Direction.NORTH,createImage("orc_animation/orc_forward_" +Direction.NORTH+".png"));
+		currImg = imgs.get(Direction.NORTH);
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	setSize(frameStartSize, frameStartSize);
     	setVisible(true);
     	pack();
     }
+	
+	public void update(int x, int y, Direction direct) {
+		if(!imgs.containsKey(direct)){
+			imgs.put(direct, createImage("orc_animation/orc_forward_" +direct+".png"));
+		}
+		
+		currImg = imgs.get(direct);
+		picNum = (picNum + 1) % frameCount;
+		xloc = x;
+		yloc= y;
+		
+		try {
+			Thread.sleep(10);//increase/decrease "speed"
+    	} catch (InterruptedException e) {
+    		e.printStackTrace();
+    	}
+    	
+		drawPanel.repaint();
+	}
 	
     @SuppressWarnings("serial")
 	private class DrawPanel extends JPanel {
@@ -57,32 +77,40 @@ public class View extends JFrame {
 			super.paintComponent(g);
 			g.setColor(Color.gray);
 	    	picNum = (picNum + 1) % frameCount;
-	    	g.drawImage(pics[picNum], xloc+=xIncr, yloc+=yIncr, Color.gray, this);
+	    	g.drawImage(currImg.getSubimage(picSize*picNum, 0, picSize, picSize), xloc, yloc, Color.gray, this);
 		}
 
 		public Dimension getPreferredSize() {
 			return new Dimension(frameStartSize, frameStartSize);
 		}
 	}
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable(){
-			public void run(){
-				Animation4Thread a = new Animation4Thread();
-				Timer t = new Timer(a.drawDelay, a.drawAction);
-				t.start();
-			}
-		});
-	}
     
     //Read image from file and return
-    private BufferedImage createImage(){
+    private BufferedImage createImage(String toLoad){
     	BufferedImage bufferedImage;
     	try {
-    		bufferedImage = ImageIO.read(new File("orc_animation/orc_forward_southeast.png"));
+    		bufferedImage = ImageIO.read(new File(toLoad));
     		return bufferedImage;
     	} catch (IOException e) {
     		e.printStackTrace();
     	}
     	return null;
-    }
+	}
+	
+	public static void main(String[] args) {
+		Controller a = new Controller();
+		a.start();
+		EventQueue.invokeLater(new Runnable(){
+			public void run(){
+			}
+		});
+	}
+	
+	public int getPicSize() {
+		return picSize;
+	}
+	
+	public int getFrameStartSize() {
+		return frameStartSize;
+	}
 }

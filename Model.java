@@ -10,10 +10,8 @@
  **/
  
 public class Model {
-	static int frameWidth;
-    static int frameHeight;
-    int imgWidth;
-    int imgHeight;
+	int picSize;
+	int frameStartSize;
 	int xloc;
 	int yloc;
 	int xIncr = 8;
@@ -22,20 +20,18 @@ public class Model {
 	boolean north = false;
     boolean east = true;
 	
-	Model(int width, int height, int imageHeight, int imageWidth) {
-		frameWidth = width;
-		frameHeight = height;
-		imgWidth = imageWidth;
-		imgHeight = imageHeight;
+	Model(int pic, int frame) {
+		picSize = pic;
+		frameStartSize = frame;
 	}
 	
 	public int detectCollision() {
 		//detects if there is a collision
 		//these booleans have padding to make the frame edges neater
-    	boolean xb = (xloc+ xIncr +(4*imgWidth/5) <= frameWidth);//x east limit
-    	xb = xb && (xloc+xIncr +(imgWidth/4) >= 0);//x west limit
-    	boolean yb = (yloc+ yIncr +imgHeight <= frameHeight);//y south limit 
-    	yb = yb && (yloc+yIncr+(imgWidth/5) >= 0);//y north limit
+    	boolean xb = (xloc+ xIncr +(4*picSize/5) <= frameStartSize);//x east limit
+    	xb = xb && (xloc+xIncr +(picSize/4) >= 0);//x west limit
+    	boolean yb = (yloc+ yIncr +picSize <= frameStartSize);//y south limit 
+    	yb = yb && (yloc+yIncr+(picSize/5) >= 0);//y north limit
     	
     	if (!xb) {
     		return 1;
@@ -51,6 +47,7 @@ public class Model {
 	public void updateLocationAndDirection() {
 		xloc += xIncr;
 		yloc += yIncr;
+
 		
 		if (detectCollision() == 1) {
 			xIncr *= -1;

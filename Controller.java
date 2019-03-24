@@ -8,7 +8,7 @@ public class Controller {
 	
 	public Controller(){
 		view = new View();
-		model = new Model(view.getWidth(), view.getHeight(), view.getImageWidth(), view.getImageHeight());
+		model = new Model(view.getPicSize(), view.getFrameStartSize());
 	}
 	
         //run the simulation
@@ -21,12 +21,7 @@ public class Controller {
 			view.update(model.getX(), model.getY(), model.getDirect());
 		}
 	}
-	public static void main(String[] args){
-		Controller x = new Controller();
-		x.start();
-		}
-	/*this main was used for testing purposes
-	public static void main(String[] args){
-		Controller x = new Controller();
-		x.start();} */
+	public View getView() {
+		return view;
+	}
 }
