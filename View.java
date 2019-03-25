@@ -15,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.util.*;
+import javax.swing.JButton;
+import java.awt.event.*;
 
 public class View extends JFrame {
 
@@ -29,18 +31,22 @@ public class View extends JFrame {
     final int drawDelay = 30; //msec
 	int picNum = 0;
 	BufferedImage currImg;
+
     
     DrawPanel drawPanel = new DrawPanel();
     Action drawAction;
+	static JButton StopB = new JButton("Stop");
+
 
     public View() {
     	drawAction = new AbstractAction(){
     		public void actionPerformed(ActionEvent e){
-    			drawPanel.repaint();
+					drawPanel.repaint();
     		}
     	};
     	
     	add(drawPanel);
+		drawPanel.add(StopB);
 		imgs = new HashMap<Direction, BufferedImage>();
 		imgs.put(Direction.NORTH,createImage("orc_animation/orc_forward_" +Direction.NORTH+".png"));
 		currImg = imgs.get(Direction.NORTH);
@@ -99,11 +105,13 @@ public class View extends JFrame {
 	
 	public static void main(String[] args) {
 		Controller a = new Controller();
+		addStopListener(a);
 		a.start();
-		EventQueue.invokeLater(new Runnable(){
+		/*EventQueue.invokeLater(new Runnable(){
 			public void run(){
+				addStopListener(a);
 			}
-		});
+		});*/
 	}
 	
 	public int getPicSize() {
@@ -112,5 +120,8 @@ public class View extends JFrame {
 	
 	public int getFrameStartSize() {
 		return frameStartSize;
+	}
+	static void addStopListener(Controller c) {
+		StopB.addActionListener(c);
 	}
 }

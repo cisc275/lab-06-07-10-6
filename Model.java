@@ -43,6 +43,10 @@ public class Model {
 			return 0;
 		}
 	}
+	public void stopAction() {
+		xIncr = 0;
+		yIncr = 0;
+	}
 	
 	public void updateLocationAndDirection() {
 		xloc += xIncr;
@@ -80,4 +84,5 @@ public class Model {
 	public Direction getDirect() {
 		return direct;
 	}
+
 }

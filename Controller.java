@@ -1,8 +1,10 @@
 /**
  * Do not modify this file without permission from your TA.
  **/
-public class Controller {
-
+ import java.awt.event.*;
+ 
+public class Controller implements ActionListener{
+//key listener goes in the controller
 	private Model model;
 	private View view;
 	
@@ -21,6 +23,11 @@ public class Controller {
 			view.update(model.getX(), model.getY(), model.getDirect());
 		}
 	}
+	
+	public void actionPerformed(ActionEvent e) {
+		model.stopAction();
+	}
+	
 	public View getView() {
 		return view;
 	}
