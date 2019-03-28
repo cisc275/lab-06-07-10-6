@@ -30,6 +30,7 @@ public class View extends JFrame {
     final int frameStartSize = 800;
     final int drawDelay = 30; //msec
 	int picNum = 0;
+	int frameLock = 1;
 	BufferedImage currImg;
 
     
@@ -62,7 +63,7 @@ public class View extends JFrame {
 		}
 		
 		currImg = imgs.get(direct);
-		picNum = (picNum + 1) % frameCount;
+		picNum = (picNum + frameLock) % frameCount;
 		xloc = x;
 		yloc= y;
 		
@@ -82,7 +83,7 @@ public class View extends JFrame {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			g.setColor(Color.gray);
-	    	picNum = (picNum + 1) % frameCount;
+	    	picNum = (picNum + frameLock) % frameCount;
 	    	g.drawImage(currImg.getSubimage(picSize*picNum, 0, picSize, picSize), xloc, yloc, Color.gray, this);
 		}
 
@@ -123,5 +124,8 @@ public class View extends JFrame {
 	}
 	static void addStopListener(Controller c) {
 		StopB.addActionListener(c);
+	}
+	public void setFrameLock(int a) {
+		frameLock = a;
 	}
 }

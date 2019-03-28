@@ -27,9 +27,11 @@ public class Controller implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(model.getBtnlock() == 0) {
 			model.stopAction();
+			view.setFrameLock(0);
 		}
 		else if(model.getBtnlock() == 1) {
 			model.goAction();
+			view.setFrameLock(1);
 		}
 	}
 	
