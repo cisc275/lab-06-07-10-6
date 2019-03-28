@@ -25,7 +25,12 @@ public class Controller implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		model.stopAction();
+		if(model.getBtnlock() == 0) {
+			model.stopAction();
+		}
+		else if(model.getBtnlock() == 1) {
+			model.goAction();
+		}
 	}
 	
 	public View getView() {

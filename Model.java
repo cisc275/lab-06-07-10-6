@@ -19,6 +19,9 @@ public class Model {
 	Direction direct;
 	boolean north = false;
     boolean east = true;
+	int btnlock = 0;
+	int storedXIncr;
+	int storedYIncr;
 	
 	Model(int pic, int frame) {
 		picSize = pic;
@@ -44,10 +47,17 @@ public class Model {
 		}
 	}
 	public void stopAction() {
+		storedXIncr = xIncr;
+		storedYIncr = yIncr;
 		xIncr = 0;
 		yIncr = 0;
+		btnlock = 1;
 	}
-	
+	public void goAction() {
+		xIncr = storedXIncr;
+		yIncr = storedYIncr;
+		btnlock = 0;
+	}
 	public void updateLocationAndDirection() {
 		xloc += xIncr;
 		yloc += yIncr;
@@ -80,9 +90,10 @@ public class Model {
 	public int getY() {
 		return yloc;
 	}
-	
 	public Direction getDirect() {
 		return direct;
 	}
-
+	public int getBtnlock() {
+		return btnlock;
+	}
 }
