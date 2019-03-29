@@ -99,4 +99,7 @@ public class Model {
 	public void setPicSize(int a) {
 		picSize = a;
 	}
+	public int getMovement() {
+		return xIncr + yIncr;
+	}
 }

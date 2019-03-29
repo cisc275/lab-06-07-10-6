@@ -33,6 +33,9 @@ public class Controller implements ActionListener, KeyListener{
 				model.stopAction();
 				view.setOrcAction(1);
 				view.setFireLock(1);
+				if (view.getJumpLock() == 1) {
+					view.setJumpLock(0);
+				}
 			}
 			else if (view.getFireLock() == 1) {
 				model.goAction();
@@ -44,6 +47,10 @@ public class Controller implements ActionListener, KeyListener{
 			if (view.getJumpLock() == 0) {
 				view.setOrcAction(2);
 				view.setJumpLock(1);
+				if (view.getFireLock() == 1) {
+					model.goAction();
+					view.setFireLock(0);
+				}
 			}
 			else if (view.getJumpLock() == 1) {
 				view.setOrcAction(0);
