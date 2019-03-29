@@ -21,22 +21,28 @@ import java.awt.event.*;
 public class View extends JFrame {
 
 	final int frameCount = 10;
-	HashMap<Direction, BufferedImage> imgs;    
+	HashMap<Direction, BufferedImage> imgs; 
+	HashMap<Direction, BufferedImage> fireImgs;
+	HashMap<Direction, BufferedImage> jumpImgs;
 	int xloc = 100;
     int yloc = 100;
     final int xIncr = 1;
     final int yIncr = 1;
-    final int picSize = 165;
+    int picSize = 165;
     final int frameStartSize = 800;
     final int drawDelay = 30; //msec
 	int picNum = 0;
 	int frameLock = 1;
+	int orcAction = 0;
+	int fireLock = 0;
+	int jumpLock = 0;
 	BufferedImage currImg;
 
     
     DrawPanel drawPanel = new DrawPanel();
     Action drawAction;
 	static JButton StopB = new JButton("Stop");
+	
 
 
     public View() {
@@ -49,6 +55,8 @@ public class View extends JFrame {
     	add(drawPanel);
 		drawPanel.add(StopB);
 		imgs = new HashMap<Direction, BufferedImage>();
+		fireImgs = new HashMap<Direction, BufferedImage>();
+		jumpImgs = new HashMap<Direction, BufferedImage>();
 		imgs.put(Direction.NORTH,createImage("orc_animation/orc_forward_" +Direction.NORTH+".png"));
 		currImg = imgs.get(Direction.NORTH);
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,11 +66,24 @@ public class View extends JFrame {
     }
 	
 	public void update(int x, int y, Direction direct) {
-		if(!imgs.containsKey(direct)){
+		if (!imgs.containsKey(direct)) {
 			imgs.put(direct, createImage("orc_animation/orc_forward_" +direct+".png"));
 		}
-		
-		currImg = imgs.get(direct);
+		if (!jumpImgs.containsKey(direct)) {
+			jumpImgs.put(direct, createImage("orc_animation/orc_jump_" +direct+".png"));
+		}
+		if (!fireImgs.containsKey(direct)) {
+			fireImgs.put(direct, createImage("orc_animation/orc_fire_" +direct+".png"));
+		}
+		if (orcAction == 0) {
+			currImg = imgs.get(direct);
+		}
+		else if (orcAction == 1) {
+			currImg = fireImgs.get(direct);
+		}
+		else if (orcAction == 2) {
+			currImg = jumpImgs.get(direct);
+		}
 		picNum = (picNum + frameLock) % frameCount;
 		xloc = x;
 		yloc= y;
@@ -107,6 +128,7 @@ public class View extends JFrame {
 	public static void main(String[] args) {
 		Controller a = new Controller();
 		addStopListener(a);
+		StopB.addKeyListener(a);
 		a.start();
 		/*EventQueue.invokeLater(new Runnable(){
 			public void run(){
@@ -118,7 +140,6 @@ public class View extends JFrame {
 	public int getPicSize() {
 		return picSize;
 	}
-	
 	public int getFrameStartSize() {
 		return frameStartSize;
 	}
@@ -127,5 +148,23 @@ public class View extends JFrame {
 	}
 	public void setFrameLock(int a) {
 		frameLock = a;
+	}
+	public void setPicSize(int a) {
+		picSize = a;
+	}
+	public void setOrcAction(int a) {
+		orcAction = a;
+	}
+	public int getFireLock() {
+		return fireLock;
+	}
+	public void setFireLock(int a) {
+		fireLock = a;
+	}
+	public int getJumpLock() {
+		return jumpLock;
+	}
+	public void setJumpLock(int a) {
+		jumpLock = a;
 	}
 }

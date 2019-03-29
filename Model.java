@@ -96,4 +96,7 @@ public class Model {
 	public int getBtnlock() {
 		return btnlock;
 	}
+	public void setPicSize(int a) {
+		picSize = a;
+	}
 }
