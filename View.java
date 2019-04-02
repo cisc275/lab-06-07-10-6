@@ -34,8 +34,6 @@ public class View extends JFrame {
 	int picNum = 0;
 	int frameLock = 1;
 	int orcAction = 0;
-	int fireLock = 0;
-	int jumpLock = 0;
 	BufferedImage currImg;
 
     
@@ -154,17 +152,5 @@ public class View extends JFrame {
 	}
 	public void setOrcAction(int a) {
 		orcAction = a;
-	}
-	public int getFireLock() {
-		return fireLock;
-	}
-	public void setFireLock(int a) {
-		fireLock = a;
-	}
-	public int getJumpLock() {
-		return jumpLock;
-	}
-	public void setJumpLock(int a) {
-		jumpLock = a;
 	}
 }

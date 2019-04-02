@@ -7,6 +7,7 @@ public class Controller implements ActionListener, KeyListener{
 //key listener goes in the controller
 	private Model model;
 	private View view;
+	int lastkey = 0;
 
 
 	
@@ -28,37 +29,28 @@ public class Controller implements ActionListener, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_F) {
-			if (view.getFireLock() == 0) {
+		if (lastkey != e.getKeyCode()) {
+			if (key == KeyEvent.VK_F) {
 				model.stopAction();
 				view.setOrcAction(1);
-				view.setFireLock(1);
-				if (view.getJumpLock() == 1) {
-					view.setJumpLock(0);
-				}
 			}
-			else if (view.getFireLock() == 1) {
-				model.goAction();
-				view.setOrcAction(0);
-				view.setFireLock(0);
+			else if (key == KeyEvent.VK_J) {
+				view.setOrcAction(2);
 			}
+		}
+		lastkey = e.getKeyCode();
+	}
+	public void keyReleased(KeyEvent e){
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_F) {
+			view.setOrcAction(0);
+			model.goAction();
 		}
 		else if (key == KeyEvent.VK_J) {
-			if (view.getJumpLock() == 0) {
-				view.setOrcAction(2);
-				view.setJumpLock(1);
-				if (view.getFireLock() == 1) {
-					model.goAction();
-					view.setFireLock(0);
-				}
-			}
-			else if (view.getJumpLock() == 1) {
-				view.setOrcAction(0);
-				view.setJumpLock(0);
-			}
+			view.setOrcAction(0);
 		}
+		lastkey = 0;
 	}
-	public void keyReleased(KeyEvent e){}
 	public void keyTyped(KeyEvent e) {}
 	public void actionPerformed(ActionEvent e) {
 		if(model.getBtnlock() == 0) {

@@ -47,8 +47,10 @@ public class Model {
 		}
 	}
 	public void stopAction() {
-		storedXIncr = xIncr;
-		storedYIncr = yIncr;
+		if (!(xIncr == 0 && yIncr ==  0)) {
+			storedXIncr = xIncr;
+			storedYIncr = yIncr;
+		}
 		xIncr = 0;
 		yIncr = 0;
 		btnlock = 1;
@@ -95,11 +97,5 @@ public class Model {
 	}
 	public int getBtnlock() {
 		return btnlock;
-	}
-	public void setPicSize(int a) {
-		picSize = a;
-	}
-	public int getMovement() {
-		return xIncr + yIncr;
 	}
 }
